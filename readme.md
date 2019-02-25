@@ -16,9 +16,9 @@ Each person does all 4 sheets, then on to the next person
 	8. Add any other notes you might think are relevant
 	9. Have fun!
 
-Task:
+## Task:
 
-Page 1 read all the words (white ink)
-Page 2 say the color that the words are printed in 
-Page 3 say the color that the symbols are printed in
-Page 4 read all the words (colored ink)
+- Page 1 read all the words (white ink)
+- Page 2 say the color that the words are printed in 
+- Page 3 say the color that the symbols are printed in
+- Page 4 read all the words (colored ink)
