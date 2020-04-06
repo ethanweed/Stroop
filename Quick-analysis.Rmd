@@ -1,0 +1,42 @@
+---
+title: "Stroop"
+author: "Ethan Weed"
+date: "4/6/2020"
+output:
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo = T,  message=FALSE, warning = F}
+# Load packages for data handling and plotting
+library(tidyverse)
+
+# clear global environment (get rid of any old variables that might be hangning around)
+rm(list = ls())
+
+# read in the data
+df <- read.csv("/Users/ethan/Documents/GitHub/ethanweed.github.io/r-tutorials/data/Stroop-raw-over-the-years.csv")
+df$Year <- NULL
+
+# make a new dataframe with the same data in the "long" format.
+#df <- gather(df, key = "Condition", value = "Time", -Year)
+
+RT <- colMeans(df)
+Stdev <- unname(sapply(df, sd, na.rm = TRUE))
+Condition <- colnames(df)
+
+data <- data.frame(Condition, RT, Stdev)
+
+ggplot(data, aes(x = Condition, y = RT)) +
+  geom_col() +
+  geom_errorbar(ymax =RT + Stdev, ymin = RT - Stdev) +
+  ylim(0,15) +
+  labs(title = "Stroop Results",
+       y = "RT (sec)") +
+  theme_classic()
+```
+
