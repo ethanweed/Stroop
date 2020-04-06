@@ -5,6 +5,7 @@ date: "4/6/2020"
 output:
   html_document:
     code_folding: hide
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r echo = T,  message=FALSE, warning = F}
 # Load packages for data handling and plotting
-library(tidyverse)
+pacman::p_load(tidyverse)
 
-# clear global environment (get rid of any old variables that might be hangning around)
+
+# clear global environment
 rm(list = ls())
 
 # read in the data
@@ -63,11 +65,17 @@ df$ID <- seq(1:length(df$Naming_Int))
 df_long <- gather(df, key = "Condition", value = "Time", -Year, -ID)
 
 # set up column with task categories
-df_long$Task <- ifelse(df_long$Condition == 'Reading_Int' | df_long$Condition == 'Reading_NoInt', "Reading", "Naming")
-df_long$Interference <- ifelse(df_long$Condition == 'Reading_Int' | df_long$Condition == 'Naming_Int', 'Interference', 'No_Interference')
+df_long$Task <- ifelse(df_long$Condition == 'Reading_Int' 
+                       | df_long$Condition == 'Reading_NoInt', 
+                       "Reading", "Naming")
+df_long$Interference <- ifelse(df_long$Condition == 'Reading_Int' 
+                               | df_long$Condition == 'Naming_Int', 
+                               'Interference', 'No_Interference')
 
 
-# Define our model. Here, we are predicting Time as modeled by Task, Interference, and the interaction of Task and Interference. We are modelling ID as a "random effect".
+# Define our model. Here, we are predicting Time as modeled by Task, Interference, 
+#and the interaction of Task and Interference. We are modelling ID as a "random effect".
+
 mod <- lmer(Time ~ Task + Interference + Task*Interference + (1|ID), data=df_long)
 ans <- anova(mod)
 

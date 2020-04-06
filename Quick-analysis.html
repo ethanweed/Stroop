@@ -197,9 +197,10 @@ summary {
 
 
 <pre class="r"><code># Load packages for data handling and plotting
-library(tidyverse)
+pacman::p_load(tidyverse)
 
-# clear global environment (get rid of any old variables that might be hangning around)
+
+# clear global environment
 rm(list = ls())
 
 # read in the data
@@ -236,11 +237,17 @@ df$ID &lt;- seq(1:length(df$Naming_Int))
 df_long &lt;- gather(df, key = &quot;Condition&quot;, value = &quot;Time&quot;, -Year, -ID)
 
 # set up column with task categories
-df_long$Task &lt;- ifelse(df_long$Condition == 'Reading_Int' | df_long$Condition == 'Reading_NoInt', &quot;Reading&quot;, &quot;Naming&quot;)
-df_long$Interference &lt;- ifelse(df_long$Condition == 'Reading_Int' | df_long$Condition == 'Naming_Int', 'Interference', 'No_Interference')
+df_long$Task &lt;- ifelse(df_long$Condition == 'Reading_Int' 
+                       | df_long$Condition == 'Reading_NoInt', 
+                       &quot;Reading&quot;, &quot;Naming&quot;)
+df_long$Interference &lt;- ifelse(df_long$Condition == 'Reading_Int' 
+                               | df_long$Condition == 'Naming_Int', 
+                               'Interference', 'No_Interference')
 
 
-# Define our model. Here, we are predicting Time as modeled by Task, Interference, and the interaction of Task and Interference. We are modelling ID as a &quot;random effect&quot;.
+# Define our model. Here, we are predicting Time as modeled by Task, Interference, 
+#and the interaction of Task and Interference. We are modelling ID as a &quot;random effect&quot;.
+
 mod &lt;- lmer(Time ~ Task + Interference + Task*Interference + (1|ID), data=df_long)
 ans &lt;- anova(mod)
 
